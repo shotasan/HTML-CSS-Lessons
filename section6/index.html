@@ -29,16 +29,55 @@
   </div>
 
   <script>
-    document.getElementById('start_stop').addEventListener('click', function () {
-      var start = new Date();
+    var start;
+    var timer_id;
 
-      setInterval(goTimer, 10);
+    document.getElementById('start_stop').addEventListener('click', function () {
+      if (this.innerHTML === 'START') {
+        start = new Date();
+
+        timer_id = setInterval(goTimer, 10);
+
+        // thisはstart_stopを示す
+        this.innerHTML = 'STOP';
+        this.classList.remove('btn-primary');
+        this.classList.add('btn-danger')
+      } else {
+        clearInterval(timer_id);
+
+        // startボタンに戻す
+        this.innerHTML = 'START';
+        this.classList.remove('btn-danger');
+        this.classList.add('btn-primary');
+      }
     });
 
+    var addZero = function (value) {
+      if (value < 10) {
+        value = '0' + value;
+      }
+      return value;
+    }
+
     var goTimer = function () {
+      // 現在時刻の取得
       var now = new Date();
 
-      document.getElementById('timer').innerHTML = now.getTime();
+      // スタートを押した時間と現在の時間との差　＝　押してからの経過時間
+      var milli = now.getTime() - start.getTime();
+      // floorメソッドは小数点を切り捨て
+      var seconds = Math.floor(milli / 1000);
+      var minutes = Math.floor(seconds / 60);
+      var hours = Math.floor(minutes / 60);
+
+      seconds = seconds - minutes * 60;
+      minutes = minutes - hours * 60;
+
+      hours = addZero(hours);
+      minutes = addZero(minutes);
+      seconds = addZero(seconds);
+
+      document.getElementById('timer').innerHTML = hours + ':' + minutes + ':' + seconds;
     }
   </script>
 </body>
