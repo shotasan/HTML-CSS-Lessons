@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+
+  <title>My Photos</title>
+</head>
+
+<body>
+  <header>
+    <h1>My Photos</h1>
+  </header>
+
+  <div class="container">
+    <div id="img_unit">
+    </div>
+  </div>
+
+  <script src="JS/jquery.min.js">
+  </script>
+  <script>
+    // 無名関数を指定すると、読み込みが終わってから呼び出しが行われる（コールバック
+    $.getJSON('https://h2o-space.com/htmlbook/images.php', function (data) {
+      for (var i = 0; i < data.length; i++) {
+        // class="photo"のタグを生成する
+        $('<div class="photo"></div>')
+          // imgタグとsec属性を追加
+          .append('<img src="' + data[i].path + '">')
+          // innerタグを作成し中にspanタグを入れる
+          .append('<div class="inner"><p>' + data[i].caption + '<span>' + data[i].name + '</span></p></div>')
+          .appendTo('#img_unit');
+      }
+    });
+  </script>
+</body>
+
+</html>
