@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+
+  <title>My Photos</title>
+</head>
+
+<body>
+  <header>
+    <h1>My Photos</h1>
+  </header>
+
+  <div class="container">
+    <div id="img_unit">
+    </div>
+  </div>
+
+  <script>
+    var ajax = new XMLHttpRequest();
+    // JSONデータの指定（リクエスト先ファイル）
+    ajax.open('GET', 'https://h2o-space.com/htmlbook/images.php');
+    // 受信ファイルのデータ形式を指定する
+    ajax.responseType = 'json';
+    // ファイルの呼び出し。追加情報がないためnullを引数にする
+    ajax.send(null);
+
+    ajax.onreadystatechange = function () {
+      if (ajax.readyState === XMLHttpRequest.DONE && ajax.status === 200) {
+        for (var i = 0; i < this.response.length; i++) {
+          var data = this.response[i];
+
+          var img = document.createElement('img');
+          img.setAttribute('src', data.path);
+
+          var caption = document.createElement('div');
+          caption.innerHTML = '<p>' + data.caption + '<span>' + data.name + '</span></p>';
+
+          var div = document.createElement('div');
+          div.className = 'photo';
+          div.appendChild(img);
+          div.appendChild(caption);
+
+          document.getElementById('img_unit').appendChild(div);
+        }
+      }
+    };
+  </script>
+</body>
+
+</html>
